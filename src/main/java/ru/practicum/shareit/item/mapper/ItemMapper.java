@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.NewItemDto;
-import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
@@ -33,17 +32,6 @@ public class ItemMapper {
         item.setName(newItemDto.getName());
         item.setDescription(newItemDto.getDescription());
         item.setAvailable(newItemDto.getAvailable());
-        return item;
-    }
-
-    public static Item toItem(Long itemId, Long userId, UpdateItemDto updateItemDto) {
-        Item item = new Item();
-
-        item.setId(itemId);
-        item.setUserId(userId);
-        item.setName(updateItemDto.getName());
-        item.setDescription(updateItemDto.getDescription());
-        item.setAvailable(updateItemDto.getAvailable());
         return item;
     }
 }
