@@ -8,14 +8,6 @@ import java.util.Optional;
 public interface ItemRepository {
     Item create(Item item);
 
-    Item updateItem(Item item);
-
-    Item updateItemName(Item item);
-
-    Item updateItemDescription(Item item);
-
-    Item updateItemAvailable(Item item);
-
     void delete(Long itemId);
 
     List<Item> findAllByUserId(Long userId);

@@ -27,36 +27,6 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Item updateItem(Item item) {
-        final Item savedItem = items.get(item.getId());
-        savedItem.setName(item.getName());
-        savedItem.setDescription(item.getDescription());
-        savedItem.setAvailable(item.getAvailable());
-        return savedItem;
-    }
-
-    @Override
-    public Item updateItemName(Item item) {
-        final Item savedItem = items.get(item.getId());
-        savedItem.setName(item.getName());
-        return savedItem;
-    }
-
-    @Override
-    public Item updateItemDescription(Item item) {
-        final Item savedItem = items.get(item.getId());
-        savedItem.setDescription(item.getDescription());
-        return savedItem;
-    }
-
-    @Override
-    public Item updateItemAvailable(Item item) {
-        final Item savedItem = items.get(item.getId());
-        savedItem.setAvailable(item.getAvailable());
-        return savedItem;
-    }
-
-    @Override
     public void delete(Long id) {
         items.remove(id);
     }

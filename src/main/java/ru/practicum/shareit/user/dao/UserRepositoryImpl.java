@@ -28,28 +28,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User updateUser(User user) {
-        final User savedUser = users.get(user.getId());
-        savedUser.setName(user.getName());
-        savedUser.setEmail(user.getEmail());
-        return savedUser;
-    }
-
-    @Override
-    public User updateUserName(User user) {
-        final User savedUser = users.get(user.getId());
-        savedUser.setName(user.getName());
-        return savedUser;
-    }
-
-    @Override
-    public User updateUserEmail(User user) {
-        final User savedUser = users.get(user.getId());
-        savedUser.setEmail(user.getEmail());
-        return savedUser;
-    }
-
-    @Override
     public void delete(Long id) {
         users.remove(id);
     }

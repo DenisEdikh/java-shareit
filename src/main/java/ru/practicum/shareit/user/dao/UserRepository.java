@@ -8,12 +8,6 @@ import java.util.Optional;
 public interface UserRepository {
     User create(User user);
 
-    User updateUser(User user);
-
-    User updateUserName(User user);
-
-    User updateUserEmail(User user);
-
     void delete(Long userId);
 
     List<User> findAll();
