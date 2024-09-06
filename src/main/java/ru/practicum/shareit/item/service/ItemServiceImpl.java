@@ -3,7 +3,6 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dao.ItemRepository;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -39,47 +38,38 @@ public class ItemServiceImpl implements ItemService {
                 userId,
                 itemId);
         userService.getById(userId);
-        getById(itemId);
+        final Item item = itemRepository.findById(itemId).orElseThrow(() -> {
+            log.warn("Item with id {} not found ", itemId);
+            return new NotFoundException(String.format("Item with id = %d not found ", itemId));
+        });
         log.debug("Finished checking contains user with userId {} and item with itemId {} in method update",
                 userId,
                 itemId);
-        final Item item = ItemMapper.toItem(itemId, userId, updateItemDto);
-
-        if (updateItemDto.getName() != null
-                && updateItemDto.getDescription() != null
-                && updateItemDto.getAvailable() != null) {
-            return ItemMapper.toItemDto(itemRepository.updateItem(item));
-        } else if (updateItemDto.getName() != null
-                && updateItemDto.getDescription() == null
-                && updateItemDto.getAvailable() == null) {
-            return ItemMapper.toItemDto(itemRepository.updateItemName(item));
-        } else if (updateItemDto.getName() == null
-                && updateItemDto.getDescription() != null
-                && updateItemDto.getAvailable() == null) {
-            return ItemMapper.toItemDto(itemRepository.updateItemDescription(item));
-        } else if (updateItemDto.getName() == null
-                && updateItemDto.getDescription() == null
-                && updateItemDto.getAvailable() != null) {
-            return ItemMapper.toItemDto(itemRepository.updateItemAvailable(item));
-        } else {
-            log.warn("Name, description and available must exist");
-            throw new ConditionsNotMetException("Name, description and available must exist");
+        if (Objects.nonNull(updateItemDto.getName())) {
+            item.setName(updateItemDto.getName());
         }
+        if (Objects.nonNull(updateItemDto.getDescription())) {
+            item.setDescription(updateItemDto.getDescription());
+        }
+        if (Objects.nonNull(updateItemDto.getAvailable())) {
+            item.setAvailable(updateItemDto.getAvailable());
+        }
+        return ItemMapper.toItemDto(item);
     }
 
     @Override
     public List<ItemDto> getAllByUserId(Long userId) {
         log.debug("Started checking contains user with userId {} in method getAllByUserId", userId);
-        userService.getById(userId);
+        userService.getById(userId); //сделать отдельный метод проверки
         log.debug("Finished checking contains user with userId {} in method getAllByUserId", userId);
         return ItemMapper.toItemDto(itemRepository.findAllByUserId(userId));
     }
 
     @Override
-    public ItemDto getById(Long id) {
-        return ItemMapper.toItemDto(itemRepository.findById(id).orElseThrow(() -> {
-            log.warn("Item with id {} not found ", id);
-            return new NotFoundException(String.format("Item with id = %d not found ", id));
+    public ItemDto getById(Long itemId) {
+        return ItemMapper.toItemDto(itemRepository.findById(itemId).orElseThrow(() -> {
+            log.warn("Item with id {} not found ", itemId);
+            return new NotFoundException(String.format("Item with id = %d not found ", itemId));
         }));
     }
 

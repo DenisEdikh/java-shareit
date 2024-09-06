@@ -33,28 +33,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto update(Long userId, UpdateUserDto updateUserDto) {
         log.debug("Started checking contains user with userId {} in method update", userId);
-        final User user = UserMapper.toUser(userId, updateUserDto);
-        getById(userId);
-        checkEmail(user);
+        final User user = userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("User with id {} not found", userId);
+            return new NotFoundException(String.format("User with id = %d not found", userId));
+        });
+        checkEmail(UserMapper.toUser(userId, updateUserDto));
         log.debug("Finished checking contains user with userId {} in method update", userId);
-        if (updateUserDto.getName() != null && updateUserDto.getEmail() != null) {
-            return UserMapper.toUserDto(userRepository.updateUser(user));
-        } else if (updateUserDto.getName() == null && updateUserDto.getEmail() != null) {
-            return UserMapper.toUserDto(userRepository.updateUserEmail(user));
-        } else if (updateUserDto.getName() != null && updateUserDto.getEmail() == null) {
-            return UserMapper.toUserDto(userRepository.updateUserName(user));
-        } else {
-            log.warn("Name and email must exist");
-            throw new ConditionsNotMetException("Name and email must exist");
+
+        if (Objects.nonNull(updateUserDto.getName())) {
+            user.setName(updateUserDto.getName());
         }
+        if (Objects.nonNull(updateUserDto.getEmail())) {
+            user.setEmail(updateUserDto.getEmail());
+        }
+        return UserMapper.toUserDto(user);
     }
 
     @Override
-    public void delete(Long id) {
-        log.debug("Started checking contains user with id {}", id);
-        getById(id);
-        log.debug("Finished checking contains user with id {}", id);
-        userRepository.delete(id);
+    public void delete(Long userId) {
+        log.debug("Started checking contains user with id {}", userId);
+        getById(userId);
+        log.debug("Finished checking contains user with id {}", userId);
+        userRepository.delete(userId);
     }
 
     @Override
@@ -63,10 +63,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getById(Long id) {
-        return UserMapper.toUserDto(userRepository.findById(id).orElseThrow(() -> {
-            log.warn("User with id {} not found", id);
-            return new NotFoundException(String.format("User with id = %d not found", id));
+    public UserDto getById(Long userId) {
+        return UserMapper.toUserDto(userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("User with id {} not found", userId);
+            return new NotFoundException(String.format("User with id = %d not found", userId));
         }));
     }
 
