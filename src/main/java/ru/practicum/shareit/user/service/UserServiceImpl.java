@@ -40,10 +40,10 @@ public class UserServiceImpl implements UserService {
         checkEmail(UserMapper.toUser(userId, updateUserDto));
         log.debug("Finished checking contains user with userId {} in method update", userId);
 
-        if (Objects.nonNull(updateUserDto.getName())) {
+        if (Objects.nonNull(updateUserDto.getName()) && !updateUserDto.getName().isBlank()) {
             user.setName(updateUserDto.getName());
         }
-        if (Objects.nonNull(updateUserDto.getEmail())) {
+        if (Objects.nonNull(updateUserDto.getEmail()) && !updateUserDto.getEmail().isBlank()) {
             user.setEmail(updateUserDto.getEmail());
         }
         return UserMapper.toUserDto(user);

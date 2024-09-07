@@ -45,10 +45,10 @@ public class ItemServiceImpl implements ItemService {
         log.debug("Finished checking contains user with userId {} and item with itemId {} in method update",
                 userId,
                 itemId);
-        if (Objects.nonNull(updateItemDto.getName())) {
+        if (Objects.nonNull(updateItemDto.getName()) && !updateItemDto.getName().isBlank()) {
             item.setName(updateItemDto.getName());
         }
-        if (Objects.nonNull(updateItemDto.getDescription())) {
+        if (Objects.nonNull(updateItemDto.getDescription()) && !updateItemDto.getDescription().isBlank()) {
             item.setDescription(updateItemDto.getDescription());
         }
         if (Objects.nonNull(updateItemDto.getAvailable())) {
