@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.NewItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
-import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 

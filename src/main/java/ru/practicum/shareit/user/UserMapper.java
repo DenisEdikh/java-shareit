@@ -1,11 +1,10 @@
-package ru.practicum.shareit.user.mapper;
+package ru.practicum.shareit.user;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.user.dto.NewUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.User;
 
 import java.util.Collection;
 import java.util.List;

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.user.dto.NewUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 

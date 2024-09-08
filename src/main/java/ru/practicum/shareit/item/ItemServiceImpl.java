@@ -1,16 +1,14 @@
-package ru.practicum.shareit.item.service;
+package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.item.dao.ItemRepository;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.NewItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
-import ru.practicum.shareit.item.mapper.ItemMapper;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.user.UserService;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,6 +43,10 @@ public class ItemServiceImpl implements ItemService {
         log.debug("Finished checking contains user with userId {} and item with itemId {} in method update",
                 userId,
                 itemId);
+        if (!Objects.equals(item.getUserId(), userId)) {
+            log.warn("Only owner can change item");
+            throw new ConditionsNotMetException("Only owner can change item");
+        }
         if (Objects.nonNull(updateItemDto.getName()) && !updateItemDto.getName().isBlank()) {
             item.setName(updateItemDto.getName());
         }
