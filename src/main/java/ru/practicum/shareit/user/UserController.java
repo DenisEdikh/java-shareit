@@ -32,7 +32,6 @@ public class UserController {
         return userDto;
     }
 
-
     @GetMapping
     public List<UserDto> getAll() {
         log.info("Started getting all users");
