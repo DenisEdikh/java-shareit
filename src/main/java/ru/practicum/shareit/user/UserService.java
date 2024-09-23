@@ -15,7 +15,5 @@ public interface UserService {
 
     List<UserDto> getAll();
 
-    User checkUserById(Long userId);
-
     UserDto getById(Long userId);
 }
