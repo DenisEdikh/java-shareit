@@ -25,12 +25,12 @@ CREATE TABLE IF NOT EXISTS items
 
 CREATE TABLE IF NOT EXISTS bookings
 (
-    id         bigint    NOT NULL GENERATED ALWAYS AS IDENTITY,
-    start_time timestamp NOT NULL,
-    end_time   timestamp NOT NULL,
-    item_id    bigint    NOT NULL,
-    user_id    bigint    NOT NULL,
-    status     int       NOT NULL default 2,
+    id         bigint      NOT NULL GENERATED ALWAYS AS IDENTITY,
+    start_time timestamp   NOT NULL,
+    end_time   timestamp   NOT NULL,
+    item_id    bigint      NOT NULL,
+    user_id    bigint      NOT NULL,
+    status     varchar(10) NOT NULL,
     CONSTRAINT pk_booking PRIMARY KEY (id),
     CONSTRAINT fk_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS bookings
 CREATE TABLE IF NOT EXISTS comments
 (
     id           bigint                      NOT NULL GENERATED ALWAYS AS IDENTITY,
-    text         text                        NOT NULL,
+    description  text                        NOT NULL,
     item_id      bigint                      NOT NULL,
     user_id      bigint                      NOT NULL,
     created_time timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
