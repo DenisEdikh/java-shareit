@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.NewUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
@@ -24,7 +23,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto create(NewUserDto newUserDto) {
         log.debug("Started checking email user in method create");
-        checkEmail(newUserDto.getEmail());
         final User user = UserMapper.toUser(newUserDto);
         log.debug("Finished checking email user in method create");
         return UserMapper.toUserDto(userRepository.save(user));
@@ -35,7 +33,6 @@ public class UserServiceImpl implements UserService {
     public UserDto update(Long userId, UpdateUserDto updateUserDto) {
         log.debug("Started checking contains user with userId {} in method update", userId);
         final User user = checkUserById(userId);
-        checkEmail(updateUserDto.getEmail());
         log.debug("Finished checking contains user with userId {} in method update", userId);
         if (Objects.nonNull(updateUserDto.getName()) && !updateUserDto.getName().isBlank()) {
             user.setName(updateUserDto.getName());
@@ -64,16 +61,10 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDto(checkUserById(userId));
     }
 
-    public User checkUserById(Long userId) {
+    private User checkUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> {
             log.warn("User with id {} not found", userId);
             return new NotFoundException(String.format("User with id = %d not found", userId));
         });
-    }
-
-    private void checkEmail(String email) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new ConditionsNotMetException("Email must not match");
-        }
     }
 }
