@@ -1,9 +1,10 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.comment;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.item.dto.CommentDto;
-import ru.practicum.shareit.item.dto.NewCommentDto;
+import ru.practicum.shareit.item.Item;
+import ru.practicum.shareit.comment.dto.CommentDto;
+import ru.practicum.shareit.comment.dto.NewCommentDto;
 import ru.practicum.shareit.user.User;
 
 import java.util.List;
