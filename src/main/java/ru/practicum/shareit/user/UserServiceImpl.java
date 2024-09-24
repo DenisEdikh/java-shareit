@@ -3,7 +3,7 @@ package ru.practicum.shareit.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.ConditionsNotMetException;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.NewUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
@@ -15,35 +15,32 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDto create(NewUserDto newUserDto) {
         log.debug("Started checking email user in method create");
         final User user = UserMapper.toUser(newUserDto);
-        checkEmail(user);
         log.debug("Finished checking email user in method create");
-        return UserMapper.toUserDto(userRepository.create(user));
+        return UserMapper.toUserDto(userRepository.save(user));
     }
 
     @Override
+    @Transactional
     public UserDto update(Long userId, UpdateUserDto updateUserDto) {
         log.debug("Started checking contains user with userId {} in method update", userId);
-        final User user = userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("User with id {} not found", userId);
-            return new NotFoundException(String.format("User with id = %d not found", userId));
-        });
-        checkEmail(UserMapper.toUser(userId, updateUserDto));
+        final User user = checkUserById(userId);
         log.debug("Finished checking contains user with userId {} in method update", userId);
-
         if (Objects.nonNull(updateUserDto.getName()) && !updateUserDto.getName().isBlank()) {
             user.setName(updateUserDto.getName());
         }
         if (Objects.nonNull(updateUserDto.getEmail()) && !updateUserDto.getEmail().isBlank()) {
             user.setEmail(updateUserDto.getEmail());
         }
-        return UserMapper.toUserDto(user);
+        return UserMapper.toUserDto(userRepository.save(user));
     }
 
     @Override
@@ -51,7 +48,7 @@ public class UserServiceImpl implements UserService {
         log.debug("Started checking contains user with id {}", userId);
         getById(userId);
         log.debug("Finished checking contains user with id {}", userId);
-        userRepository.delete(userId);
+        userRepository.deleteById(userId);
     }
 
     @Override
@@ -61,16 +58,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getById(Long userId) {
-        return UserMapper.toUserDto(userRepository.findById(userId).orElseThrow(() -> {
-            log.warn("User with id {} not found", userId);
-            return new NotFoundException(String.format("User with id = %d not found", userId));
-        }));
+        return UserMapper.toUserDto(checkUserById(userId));
     }
 
-    private void checkEmail(User user) {
-        if (userRepository.findAll().stream()
-                .anyMatch(u -> Objects.equals(u.getEmail(), user.getEmail()))) {
-            throw new ConditionsNotMetException("Email must not match");
-        }
+    private User checkUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("User with id {} not found", userId);
+            return new NotFoundException(String.format("User with id = %d not found", userId));
+        });
     }
 }

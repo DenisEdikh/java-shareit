@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoTime;
+import ru.practicum.shareit.comment.dto.NewCommentDto;
 import ru.practicum.shareit.item.dto.NewItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 
@@ -26,26 +29,36 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ItemDto create(@Valid @RequestBody NewItemDto newItemDto,
-                          @RequestHeader(value = "X-Sharer-User-Id") Long userId) {
+    public ItemDto createItem(@Valid @RequestBody NewItemDto newItemDto,
+                              @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
         log.info("Started creating new item");
-        final ItemDto itemDto = itemService.create(userId, newItemDto);
+        final ItemDto itemDto = itemService.create(ownerId, newItemDto);
         log.info("Finished creating new item");
         return itemDto;
     }
 
+    @PostMapping("/{itemId}/comment")
+    public CommentDto createComment(@Valid @RequestBody NewCommentDto newCommentDto,
+                                    @PathVariable(name = "itemId") Long itemId,
+                                    @RequestHeader(value = "X-Sharer-User-Id") Long userId) {
+        log.info("Started creating comment with itemId = {}", itemId);
+        final CommentDto commentDto = itemService.createComment(itemId, userId, newCommentDto);
+        log.info("Generated creating comment with itemId = {}", itemId);
+        return commentDto;
+    }
+
     @GetMapping
-    public List<ItemDto> getAllItems(@RequestHeader(value = "X-Sharer-User-Id") Long userId) {
+    public List<ItemDto> getAllItems(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
         log.info("Started getting all items");
-        final List<ItemDto> itemsDto = itemService.getAllByUserId(userId);
+        final List<ItemDto> itemsDto = itemService.getAllByUserId(ownerId);
         log.info("Finished getting all items");
         return itemsDto;
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getItemById(@PathVariable(value = "itemId") Long itemId) {
+    public ItemDtoTime getItemById(@PathVariable(value = "itemId") Long itemId) {
         log.info("Started getting item by id = {}", itemId);
-        final ItemDto itemDto = itemService.getById(itemId);
+        final ItemDtoTime itemDto = itemService.getById(itemId);
         log.info("Finished getting item by id = {}", itemId);
         return itemDto;
     }
@@ -53,9 +66,9 @@ public class ItemController {
     @PatchMapping("/{itemId}")
     public ItemDto update(@Valid @RequestBody UpdateItemDto updateItemDto,
                           @PathVariable(value = "itemId") Long itemId,
-                          @RequestHeader(value = "X-Sharer-User-Id") Long userId) {
+                          @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
         log.info("Started updating item with id {}", itemId);
-        final ItemDto itemDto = itemService.update(itemId, userId, updateItemDto);
+        final ItemDto itemDto = itemService.update(itemId, ownerId, updateItemDto);
         log.info("Finished updating item with id {}", itemId);
         return itemDto;
     }
