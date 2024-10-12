@@ -65,9 +65,7 @@ public class BookingController {
 
     @GetMapping
     public ResponseEntity<Object> getAllByState(@RequestHeader(value = "X-Sharer-User-Id") Long bookerId,
-                                                @RequestParam(value = "state", defaultValue = "ALL") String state/*,
-                                          @RequestParam(value = "from") Integer from,
-                                          @RequestParam(value = "size") Integer size*/) {
+                                                @RequestParam(value = "state", defaultValue = "ALL") String state) {
         log.info("Started getting all booking by state");
         State confirmedState = State.from(state).orElseThrow(InvalidStateException::new);
         final ResponseEntity<Object> booking = bookingClient.getAllByState(bookerId, confirmedState);

@@ -1,6 +1,5 @@
 package ru.practicum.shareit.server.booking;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,9 +53,7 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getAllByState(@RequestHeader(value = "X-Sharer-User-Id") Long bookerId,
-                                          @RequestParam(value = "state", defaultValue = "ALL") State state/*,
-                                          @RequestParam(value = "from") Integer from,
-                                          @RequestParam(value = "size") Integer size*/) {
+                                          @RequestParam(value = "state", defaultValue = "ALL") State state) {
         log.info("Started getting all booking by state");
         final List<BookingDto> bookingDtos = bookingService.getAllByState(bookerId, state);
         log.info("Finished getting all booking by state");

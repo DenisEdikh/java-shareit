@@ -34,7 +34,7 @@ public class ItemController {
     }
 
     @PatchMapping("/{itemId}")
-    public ResponseEntity<Object> update(@Valid @RequestBody UpdateItemDto updateItemDto,
+    public ResponseEntity<Object> update(@RequestBody UpdateItemDto updateItemDto,
                                          @PathVariable(value = "itemId") Long itemId,
                                          @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
         log.info("Started updating item with id {}", itemId);
@@ -64,9 +64,6 @@ public class ItemController {
     public ResponseEntity<Object> getBySearch(@RequestParam(value = "text") String text,
                                               @RequestHeader(value = "X-Sharer-User-Id") Long userId) {
         log.info("Started searching item contained text: {}", text);
-//        if (text.isBlank()) {
-//            return ;
-//        }
         final ResponseEntity<Object> item = itemClient.getBySearch(userId, text);
         log.info("Finished searching item contained text: {}", text);
         return item;

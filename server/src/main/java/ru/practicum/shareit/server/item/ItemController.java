@@ -1,6 +1,5 @@
 package ru.practicum.shareit.server.item;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.server.comment.dto.CommentDto;
-import ru.practicum.shareit.server.item.dto.ItemDto;
-import ru.practicum.shareit.server.item.dto.ItemAllDto;
 import ru.practicum.shareit.server.comment.dto.NewCommentDto;
+import ru.practicum.shareit.server.item.dto.ItemAllDto;
+import ru.practicum.shareit.server.item.dto.ItemDto;
 import ru.practicum.shareit.server.item.dto.NewItemDto;
 import ru.practicum.shareit.server.item.dto.UpdateItemDto;
 
