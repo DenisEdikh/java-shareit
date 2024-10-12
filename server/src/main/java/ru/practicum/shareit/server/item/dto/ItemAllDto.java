@@ -1,9 +1,8 @@
 package ru.practicum.shareit.server.item.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ru.practicum.shareit.server.booking.dto.BookingForAllItemDto;
 import ru.practicum.shareit.server.comment.dto.CommentDto;
 
@@ -11,8 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemAllDto {
