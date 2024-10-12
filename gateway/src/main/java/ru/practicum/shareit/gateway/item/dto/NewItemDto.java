@@ -3,12 +3,10 @@ package ru.practicum.shareit.gateway.item.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewItemDto {
