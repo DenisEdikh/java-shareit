@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS requests
     user_id      bigint                      NOT NULL,
     created_time timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pk_request PRIMARY KEY (id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    CONSTRAINT fk_user_request FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     );
 
 CREATE TABLE IF NOT EXISTS items
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS items
     available   boolean      NOT NULL,
     CONSTRAINT pk_item PRIMARY KEY (id),
     CONSTRAINT fk_request FOREIGN KEY (request_id) REFERENCES requests (id) ON DELETE SET NULL,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    CONSTRAINT fk_user_item FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS bookings
@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS bookings
     user_id    bigint      NOT NULL,
     status     varchar(10) NOT NULL,
     CONSTRAINT pk_booking PRIMARY KEY (id),
-    CONSTRAINT fk_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    CONSTRAINT fk_item_booking FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_booking FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS comments
@@ -57,6 +57,6 @@ CREATE TABLE IF NOT EXISTS comments
     user_id      bigint                      NOT NULL,
     created_time timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pk_comment PRIMARY KEY (id),
-    CONSTRAINT fk_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    CONSTRAINT fk_item_comment FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_comment FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
