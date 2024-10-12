@@ -11,18 +11,19 @@
 
     <groupId>ru.practicum</groupId>
     <artifactId>shareit</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
 
     <name>ShareIt</name>
-    <modules>
-        <module>gateway</module>
-        <module>server</module>
-    </modules>
 
     <properties>
         <java.version>21</java.version>
     </properties>
+
+    <modules>
+        <module>gateway</module>
+        <module>server</module>
+    </modules>
 
     <build>
         <pluginManagement>
@@ -31,6 +32,9 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
+                        <layers>
+                            <enabled>true</enabled>
+                        </layers>
                         <excludes>
                             <exclude>
                                 <groupId>org.projectlombok</groupId>
@@ -40,28 +44,30 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>com.mysema.maven</groupId>
-                    <artifactId>apt-maven-plugin</artifactId>
-                    <version>1.1.3</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <spring.profiles.active>test</spring.profiles.active>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <spring.profiles.active>test</spring.profiles.active>
+                        </systemPropertyVariables>
+                    </configuration>
                     <executions>
                         <execution>
                             <goals>
-                                <goal>process</goal>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
                             </goals>
-                            <configuration>
-                                <outputDirectory>target/generated-sources/java</outputDirectory>
-                                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-                            </configuration>
                         </execution>
                     </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.querydsl</groupId>
-                            <artifactId>querydsl-apt</artifactId>
-                            <classifier>jakarta</classifier>
-                            <version>5.1.0</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -88,15 +94,6 @@
                             <version>10.3</version>
                         </dependency>
                     </dependencies>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <spring.profiles.active>test</spring.profiles.active>
-                        </systemPropertyVariables>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
@@ -209,6 +206,16 @@
                 </plugins>
             </reporting>
         </profile>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
-
 </project>
