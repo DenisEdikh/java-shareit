@@ -40,7 +40,6 @@ public class BookingServiceImpl implements BookingService {
             log.warn("Item with id {} not found ", newBookingDto.getItemId());
             return new NotFoundException(String.format("Item with id = %d not found ", newBookingDto.getItemId()));
         });
-//        checkCorrectnessOfTime(newBookingDto);
         checkAvailable(item);
         isOverlappingTime(newBookingDto, item);
         log.debug("Finished checking contains booker with bookerId {} and Item in with itemId {} method create",
@@ -54,7 +53,6 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public BookingDto update(Long bookingId, Long userId, Boolean approved) {
         //todo сделать join fetch
-//        checkUserIsContained(userId);
         final Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> {
             log.warn("Booking with id {} not found ", bookingId);
             return new NotFoundException(String.format("Booking with id = %d not found ", bookingId));
@@ -108,7 +106,6 @@ public class BookingServiceImpl implements BookingService {
                     .findBookingByBookerIdAndEndBefore(bookerId, ldt, sort));
             case FUTURE -> BookingMapper.toBookingDto(bookingRepository
                     .findBookingByBookerIdAndStartAfter(bookerId, ldt, sort));
-            default -> throw new InvalidRequestException(String.format("Unknown state: %s", State.UNSUPPORTED_STATUS));
         };
     }
 
@@ -132,7 +129,6 @@ public class BookingServiceImpl implements BookingService {
                     .findBookingByItemOwnerIdAndEndBefore(ownerId, ldt, sort));
             case FUTURE -> BookingMapper.toBookingDto(bookingRepository
                     .findBookingByItemOwnerIdAndStartAfter(ownerId, ldt, sort));
-            default -> throw new InvalidRequestException(String.format("Unknown state: %s", State.UNSUPPORTED_STATUS));
         };
     }
 
@@ -152,16 +148,6 @@ public class BookingServiceImpl implements BookingService {
             throw new InvalidRequestException(String.format("Item with id = %d is busy", item.getId()));
         }
     }
-
-//    private void checkCorrectnessOfTime(NewBookingDto newBookingDto) {
-//        if (newBookingDto.getStart().isAfter(newBookingDto.getEnd())
-//                || newBookingDto.getEnd().equals(newBookingDto.getStart())
-//                || newBookingDto.getEnd().isBefore(LocalDateTime.now())
-//                || newBookingDto.getStart().isBefore(LocalDateTime.now())) {
-//            log.warn("Booking has invalid time");
-//            throw new InvalidRequestException("Booking has invalid time");
-//        }
-//    }
 
     private User checkUserIsContained(Long userId) {
         return userRepository.findById(userId)

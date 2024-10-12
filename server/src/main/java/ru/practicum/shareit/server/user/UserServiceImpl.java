@@ -24,13 +24,7 @@ public class UserServiceImpl implements UserService {
     public UserDto create(NewUserDto newUserDto) {
         log.debug("Started checking email user in method create");
         final User user = UserMapper.toUser(newUserDto);
-//        checkEmail(user);
         log.debug("Finished checking email user in method create");
-//        try {
-//            final UserDto userDto = UserMapper.toUserDto(userRepository.save(user));
-//        } catch (SQ) {
-//
-//        }
         return UserMapper.toUserDto(userRepository.save(user));
     }
 
@@ -52,9 +46,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(Long userId) {
-//        log.debug("Started checking contains user with id {}", userId);
-//        getById(userId);
-//        log.debug("Finished checking contains user with id {}", userId);
         userRepository.deleteById(userId);
     }
 
@@ -74,11 +65,4 @@ public class UserServiceImpl implements UserService {
             return new NotFoundException(String.format("User with id = %d not found", userId));
         });
     }
-
-//    private void checkEmail(User user) {
-//        if (userRepository.findAll().stream()
-//                .anyMatch(u -> Objects.equals(u.getEmail(), user.getEmail()))) {
-//            throw new ConditionsNotMetException("Email must not match");
-//        }
-//    }
 }

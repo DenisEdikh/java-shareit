@@ -77,7 +77,7 @@ public class ItemServiceImpl implements ItemService {
                 userId,
                 itemId);
         checkUserIsContained(userId);
-        //todo сдулать join fetch
+
         final Item item = checkItemIsContained(itemId);
         log.debug("Finished checking contains user with userId {} and item with itemId {} in method update",
                 userId,
@@ -97,7 +97,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemAllDto> getAllByUserId(Long userId) {
-        //todo проверить join fetch
         log.debug("Started checking contains user with userId {} in method getAllByUserId", userId);
         checkUserIsContained(userId);
         log.debug("Finished checking contains user with userId {} in method getAllByUserId", userId);
