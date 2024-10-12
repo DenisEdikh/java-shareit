@@ -31,7 +31,7 @@ public class BookingController {
     public ResponseEntity<Object> create(@Valid @RequestBody NewBookingDto newBookingDto,
                                          @RequestHeader(value = "X-Sharer-User-Id") Long bookerId) {
         log.info("Started creating new booking");
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusSeconds(5);
         if (newBookingDto.getStart().isAfter(newBookingDto.getEnd())
                 || newBookingDto.getEnd().equals(newBookingDto.getStart())
                 || newBookingDto.getEnd().isBefore(now)
