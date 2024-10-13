@@ -53,7 +53,7 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getAllByState(@RequestHeader(value = "X-Sharer-User-Id") Long bookerId,
-                                          @RequestParam(value = "state", defaultValue = "ALL") State state) {
+                                          @RequestParam(value = "state") State state) {
         log.info("Started getting all booking by state");
         final List<BookingDto> bookingDtos = bookingService.getAllByState(bookerId, state);
         log.info("Finished getting all booking by state");
@@ -62,7 +62,7 @@ public class BookingController {
 
     @GetMapping("/owner")
     public List<BookingDto> getAllByOwner(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
-                                          @RequestParam(value = "state", defaultValue = "ALL") State state) {
+                                          @RequestParam(value = "state") State state) {
         log.info("Started getting all booking by owner");
         final List<BookingDto> bookingDtos = bookingService.getAllByOwner(ownerId, state);
         log.info("Finished getting all booking by owner");

@@ -130,7 +130,8 @@ class BookingControllerTest {
         when(bookingService.getAllByState(anyLong(), any(State.class))).thenReturn(List.of(bookingDto));
 
         mvc.perform(get(API_PREFIX)
-                        .header("X-Sharer-User-Id", 1L))
+                        .header("X-Sharer-User-Id", 1L)
+                        .queryParam("state", State.ALL.name()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(bookingDto.getId()), Long.class))
                 .andExpect(jsonPath("$[0].start", is(bookingDto.getStart().toString())))
@@ -149,7 +150,8 @@ class BookingControllerTest {
         when(bookingService.getAllByOwner(anyLong(), any(State.class))).thenReturn(List.of(bookingDto));
 
         mvc.perform(get(API_PREFIX + "/owner")
-                        .header("X-Sharer-User-Id", 1L))
+                        .header("X-Sharer-User-Id", 1L)
+                        .queryParam("state", State.ALL.name()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(bookingDto.getId()), Long.class))
                 .andExpect(jsonPath("$[0].start", is(bookingDto.getStart().toString())))
